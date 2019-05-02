@@ -1,0 +1,69 @@
+connecting
+Setting up mDNS listener since this is not a Mambo
+Making a browser for _arsdk-090c._udp.local.
+Service Bebop2-162708._arsdk-090c._udp.local. added, service info: ServiceInfo(type='_arsdk-090c._udp.local.', name='Bebop2-162708._arsdk-090c._udp.local.', address=b'\xc0\xa8*\x01', port=44444, weight=0, priority=0, server='Bebop2-162708.local.', properties={b'{"device_id":"PI040384AH8A162708"}': False})
+{"d2c_port": 43210, "controller_type": "computer", "controller_name": "pyparrot", "arstream2_client_stream_port": 55004, "arstream2_client_control_port": 55005}
+{'status': 0, 'c2d_port': 54321, 'c2d_update_port': 51, 'c2d_user_port': 21, 'qos_mode': 0, 'arstream2_server_stream_port': 5004, 'arstream2_server_control_port': 5005}
+c2d_port is 54321
+starting listening at 
+ Success in setting up the wifi network to the drone! 
+True
+sleeping
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(144, 0, 2)
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(142, 0, 3)
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(134, 0, 3)
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(134, 0, 4)
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(134, 0, 4)
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(134, 0, 4)
+ Error: tried to parse a bad sensor packet 
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(144, 0, 1)
+GpsLocationChanged_longitude: -112.4501419999997
+GpsLocationChanged_latitude: 34.61603716666696
+GpsLocationChanged_altitude 1578.300048828125
+
+PositionChanged_longitude: -112.45013516666671
+PositionChanged_latitude: 34.61603300000116
+PositionChanged_altitude: 1578.4000244140625
+
+HomeChanged_longitude: -112.45013633333335
+HomeChanged_latitude: 34.616043
+HomeChanged_altitude: 2.0
+
+
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(144, 0, 2)
+GpsLocationChanged_longitude: -112.45015216666593
+GpsLocationChanged_latitude: 34.61604083333351
+GpsLocationChanged_altitude 1577.9000244140625
+
+PositionChanged_longitude: -112.45015216666593
+PositionChanged_latitude: 34.61604083333351
+PositionChanged_altitude: 1577.9000244140625
+
+HomeChanged_longitude: -112.45013633333335
+HomeChanged_latitude: 34.616043
+HomeChanged_altitude: 2.0
+
+
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(142, 0, 3)
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(134, 0, 3)
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(134, 0, 4)
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(134, 0, 4)
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(134, 0, 4)
+ Error: tried to parse a bad sensor packet 
+ Could not find sensor in list - ignoring for now.  Packet info below. 
+(144, 0, 1)
+DONE - disconnecting
+ disconnecting 

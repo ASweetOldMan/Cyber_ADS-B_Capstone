@@ -1,0 +1,153 @@
+from pyparrot.Bebop import Bebop
+
+from termcolor import cprint, colored
+
+import multiprocessing as mp
+from _thread import *
+import netifaces as net
+import socket, logging, ctypes, sys, os
+import cv2
+import math, time
+from datetime import datetime
+
+from geographiclib.geodesic import Geodesic
+import geopy.distance
+
+import pyModeS as pms
+
+
+def flight_plan(keepGoing):
+#    #Video Config
+#    bebop.set_video_framerate("30_FPS")
+#    bebop.set_video_resolutions("rec1080_stream480")
+#    bebop.set_video_recording("quality")
+
+    print("in flight plan")
+    print("sleeping")
+#    bebop.smart_sleep(3)
+    bebop.safe_takeoff(10)
+    print("Takeoff Done")
+    bebop.move_relative(0, 0, -1, 0)  #move_relative(self, dx, dy, dz, dradians)
+    print("Move Done")
+    #bebop.smart_sleep(5)
+    
+    bebop.smart_sleep(20)
+    
+    print("Landing")
+    bebop.safe_land(10)
+    
+    keepGoing.value = 0
+
+
+def collision_avoidance(keepGoing, personalSpace = 5.0, interval = 1.0):
+    """
+    Begin Collision Avoidance Routine
+    
+    :param keepGoing:
+    :param personalSpace:
+    :param interval:
+    :return:
+    """
+    print("collision avoidance started")
+
+    currentTime = time.time()
+    lastTime = 0
+    
+    clearance = 0.00007
+
+    collisionState = 0
+    safe, caution, danger = 0, 1, 2
+
+    while(1):
+        lastTime = currentTime
+
+        currentLat = bebop.sensors.sensors_dict["GpsLocationChanged_latitude"]
+        currentLon = bebop.sensors.sensors_dict["GpsLocationChanged_longitude"]
+        currentAlt = bebop.sensors.sensors_dict["GpsLocationChanged_altitude"]
+
+        #drone stores 500.0 when no reliable GPS signal
+        if(currentLat == 500.0):
+            cprint("ERROR: Unreliable GPS Signal", "red")
+            flightProc.terminate()
+            keepGoing.value = 0
+            return
+
+        if(currentLon == 500.0):
+            cprint("ERROR: Unreliable GPS Signal", "red")
+            flightProc.terminate()
+            keepGoing.value = 0
+            return
+
+        if(currentAlt == 500.0):
+            cprint("ERROR: Unreliable GPS Signal", "red")
+            flightProc.terminate()
+            keepGoing.value = 0
+            return
+
+        currentCoords = (currentLat, currentLon)
+
+        threatLat = currentLat - clearance
+        threatLon = currentLon
+        threatAlt = currentAlt
+        
+        clearance = clearance - 0.0000025
+
+        threatCoords = (threatLat, currentLon)
+
+        threatDistance = geopy.distance.distance(currentCoords, threatCoords).feet
+        deltaAlt = abs(currentAlt - threatAlt)
+        #Doug Chamberlain
+        threatSeparation = math.hypot(threatDistance, deltaAlt)
+        
+        print(threatSeparation)
+
+        if(threatSeparation <= personalSpace):
+            cprint("Collision Avoidance Activated", "red")
+            flightProc.terminate()
+            #cprint("Flight Process Terminated")
+            keepGoing.value = 0
+            #cprint("keepGoing set to 0")
+            return
+
+        currentTime = time.time()
+        timeUntilNextFrame = interval - (currentTime - lastTime)
+        bebop.smart_sleep(timeUntilNextFrame)
+        currentTime = time.time()
+
+
+if __name__ == "__main__":
+    
+    keepGoing = mp.Value('i', 1) #access with "keepGoing.value = ..."    #accessible across processes
+
+    # make my bebop object
+    bebop = Bebop()
+    bebop.smart_sleep(2)
+
+    # connect to the bebop
+    success = bebop.connect(5)
+    if(success):
+        bebop.smart_sleep(3)
+        bebop.ask_for_state_update()
+        
+        cprint(("Battery: " + str(bebop.sensors.battery)), "yellow")
+
+        flightProc = mp.Process(target = flight_plan, args = (keepGoing, ))
+        flightProc.start()
+
+        collisionProc = mp.Process(target = collision_avoidance, args = (keepGoing, 5.0, 2.0))
+        collisionProc.start()
+
+
+    while(keepGoing.value == 1):
+        continue
+    
+
+    print("executing emergency landing")
+    bebop.emergency_land()
+    print("bebop emergency land sent")
+    bebop.smart_sleep(5)
+    
+    if (not bebop.is_landed()):
+        bebop.emergency_land()
+
+    bebop.disconnect()

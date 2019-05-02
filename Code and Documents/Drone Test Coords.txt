@@ -1,0 +1,25 @@
+Drone 1.1:
+	Approx. Hdg:	69.78 Deg.
+	Approx. Dist:	35.54 Ft.
+	Drone 1.1a:
+		Lat:		34.616921
+		Long:		-112.453415
+	
+	Drone 1.1b:
+		Lat:		34.616954
+		Long:		-112.453304
+	
+
+Drone 2.1:
+	Approx. Hdg:	15.15 Deg.
+	Approx. Dist:	27.63 Ft.
+	Drone2.1a:
+		Lat:		34.616811
+		Long:		-112.453341
+	
+	Drone2.1b
+		Lat:		34.616884
+		Long:		-112.453317
+	
+	
+	
